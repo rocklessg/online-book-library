@@ -61,5 +61,19 @@ namespace ELibrary.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        public IActionResult UpdateBook(BookUpdateRequestDTO updatebook)
+        {
+            try
+            {
+                bool result = _bookRepository.UpdateBook(updatebook);
+                if (result == true)
+                    return Ok("Book Updated Successfully");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
