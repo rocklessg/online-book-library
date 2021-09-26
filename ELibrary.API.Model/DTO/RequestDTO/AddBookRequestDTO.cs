@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace ELibrary.API.Model.DTO.RequestDTO
 {
@@ -14,7 +11,7 @@ namespace ELibrary.API.Model.DTO.RequestDTO
         public string Publisher { get; set; }
         public DateTime PublishedDate { get; set; }
         public string ISBN { get; set; }
-        public string ThumbnailUrl { get; set; }
+        public IFormFile BookAvatar { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
     }

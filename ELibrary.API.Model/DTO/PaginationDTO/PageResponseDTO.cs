@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELibrary.API.Model.DTO.PaginationDTO
 {
@@ -16,6 +12,7 @@ namespace ELibrary.API.Model.DTO.PaginationDTO
         public int PageSize { get; set; }
         public int TotalPages { get; set; }
         public int TotalRecords { get; set; }
+
         public PageResponseDTO(T data, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;

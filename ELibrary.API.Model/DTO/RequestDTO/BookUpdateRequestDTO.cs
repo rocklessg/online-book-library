@@ -10,7 +10,7 @@ namespace ELibrary.API.Model.DTO.RequestDTO
         public string SubCategoryName { get; set; }
 
         public string Title { get; set; }
-        
+
         public string Author { get; set; }
 
         public string Publisher { get; set; }
@@ -24,5 +24,6 @@ namespace ELibrary.API.Model.DTO.RequestDTO
         public string LongDescription { get; set; }
 
         public IFormFile Image { get; set; }
+        public string SubCategoryId { get; set; }
     }
 }

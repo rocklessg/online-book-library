@@ -1,12 +1,14 @@
 ﻿using ELibrary.API.Model;
 using ELibrary.API.Model.DTO.RequestDTO;
+using ELibrary.API.Model.DTO.ResponseDTO;
 using System.Threading.Tasks;
 
 namespace ELibrary.API.Repository
 {
     public interface IAuthUser
     {
-        Task<User> Login(LoginRequestDTO userRequest);
-        Task<User> Register(User user);
+        Task<LoginResponseDTO> Login(LoginRequestDTO userRequest);
+
+        Task<User> Register(RegistrationRequestDTO registrationRequestDTO);
     }
 }

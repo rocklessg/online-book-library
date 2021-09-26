@@ -1,11 +1,10 @@
-﻿using ELibrary.API.Repository;
+﻿using ELibrary.API.Model;
+using ELibrary.API.Model.DTO.RequestDTO;
+using ELibrary.API.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ELibrary.API.Controllers
 {
@@ -20,28 +19,62 @@ namespace ELibrary.API.Controllers
             _reviewRepository = reviewRepository;
         }
 
+        [HttpPost("Add")]
+        public IActionResult AddReview(AddReviewDTO addReview)
+        {
+            bool result = _reviewRepository.AddReview(addReview);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            return Ok("Comment Added");
+        }
+
+        [HttpPatch("Update")]
+        public IActionResult UpdateReview(string reviewId, string Comment)
+        {
+            bool result = _reviewRepository.UpdateReview(reviewId, Comment);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            return Ok("Updated Successfully");
+        }
 
         /// <summary>
-        /// Removes a user from the data store using the user Id
+        /// Fetches a review from the data store using the review Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="reviewId"></param>
         /// <returns></returns>
-        [HttpDelete()]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteUserById(string id)
+        [HttpGet("get-review-by-Id")]
+        //[Authorize(Roles = "User")]
+        public IActionResult GetReviewById(string reviewId)
         {
             try
             {
-                bool result = await _reviewRepository.DeleteUser(id);
-                if (result == true)
-                    return NoContent();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                Review result = _reviewRepository.GetReviewById(reviewId);
+                return Ok(result);
             }
-            catch (Exception ex)
+            catch (ArgumentException errors)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(errors.Message);
+            }
+        }
+
+        /// <summary>
+        /// Fetches a list of reviews from the data store that match the bookId
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        [HttpGet("get-review-by-bookId")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetReviewByBookId(string bookId)
+        {
+            try
+            {
+                var result = _reviewRepository.GetReviewsByBookId(bookId);
+                return Ok(result);
+            }
+            catch (ArgumentException errors)
+            {
+                return BadRequest(errors.Message);
             }
         }
     }
 }
-

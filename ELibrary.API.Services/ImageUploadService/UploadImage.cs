@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ELibrary.API.Services.ImageUploadService
@@ -18,16 +16,12 @@ namespace ELibrary.API.Services.ImageUploadService
         private readonly Cloudinary _cloudinary;
         private readonly UploadSettings _accountSettings;
 
-
-
         public UploadImage(IConfiguration configuration, IOptions<UploadSettings> accountSettings)
         {
             Configuration = configuration;
             _accountSettings = accountSettings.Value;
             _cloudinary = new Cloudinary(new Account(_accountSettings.CloudName, _accountSettings.ApiKey, _accountSettings.ApiSecret));
         }
-
-
 
         /// <summary>
         /// Uploads an image to cloudinary and returns the upload result
@@ -77,7 +71,5 @@ namespace ELibrary.API.Services.ImageUploadService
                 return uploadResult;
             }
         }
-
-
     }
 }

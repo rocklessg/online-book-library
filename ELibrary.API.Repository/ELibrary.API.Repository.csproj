@@ -12,6 +12,7 @@
     <ProjectReference Include="..\ELibrary.API.Data\ELibrary.API.Data.csproj" />
     <ProjectReference Include="..\ELibrary.API.Model\ELibrary.API.Model.csproj" />
     <ProjectReference Include="..\ELibrary.API.Services\ELibrary.API.Services.csproj" />
+    <ProjectReference Include="..\ELibrary.Common\ELibrary.Common.csproj" />
   </ItemGroup>
 
 </Project>

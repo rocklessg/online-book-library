@@ -48,8 +48,9 @@ namespace ELibrary.API.Services
              claims: authClaims,
              expires: DateTime.Now.AddMinutes(30),
              signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+            DateTimeOffset tokenValidityPeriod = token.ValidTo;
+            return tokenAsString;
         }
     }
 }

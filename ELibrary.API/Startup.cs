@@ -36,11 +36,12 @@ namespace ELibrary.API
         {
             services.AddDbContext<ElibraryDbContext>(options =>
             options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-           
+
             //This service configures implementation for accessing HttpClient
             services.AddHttpContextAccessor();
             //This service configures implementation for getting the base url
-            services.AddSingleton<IPageUriService>(options => {
+            services.AddSingleton<IPageUriService>(options =>
+            {
                 var accessor = options.GetRequiredService<IHttpContextAccessor>();
                 var request = accessor.HttpContext.Request;
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
@@ -63,13 +64,18 @@ namespace ELibrary.API
                         ValidateIssuer = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidAudience = Configuration["JwtSettings :Audience"],
-                        ValidIssuer = Configuration["JwtSettings : Issuer"],
+                        ValidAudience = Configuration["JwtSettings:Audience"],
+                        ValidIssuer = Configuration["JwtSettings:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding
-                        .UTF8.GetBytes(Configuration["JwtSettings : SecretKey"])),
+                        .UTF8.GetBytes(Configuration["JwtSettings:SecretKey"])),
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            services.AddTransient<IUserRepository, UserRepository>()
+                .AddTransient<IBookRepository, BookRepository>()
+                .AddTransient<IRatingRepository, RatingRepository>()
+                .AddTransient<IReviewRepository, ReviewRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -94,8 +100,6 @@ namespace ELibrary.API
             });
             });
 
-
-
             services.AddScoped<IUploadImage, UploadImage>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAuthUser, AuthUser>();
@@ -104,7 +108,6 @@ namespace ELibrary.API
             services.Configure<UploadSettings>(Configuration.GetSection("UploadSettings"));
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager,
         UserManager<User> userManager, ElibraryDbContext context)
@@ -112,6 +115,9 @@ namespace ELibrary.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ELibrary.API v1"));
+                ELibrarySeeder.SeedELibraryDb(roleManager, userManager, context);
             }
             else
             {
@@ -124,16 +130,12 @@ namespace ELibrary.API
                     });
                 });
             }
-            
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ELibrary.API v1"));
-            
-            ELibrarySeeder.SeedELibraryDb(roleManager, userManager, context); 
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

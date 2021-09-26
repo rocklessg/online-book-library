@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ELibrary.API.Model.DTO
 {
@@ -11,9 +6,11 @@ namespace ELibrary.API.Model.DTO
     {
         public string UserId { get; set; }
         public string BookId { get; set; }
+
         [Required]
         [StringLength(150), DataType(DataType.Text)]
         public string Comment { get; set; }
+
         public BookDTO Book { get; set; }
         public UserDTO User { get; set; }
     }

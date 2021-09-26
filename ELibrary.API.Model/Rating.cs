@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ELibrary.API.Model
 {
@@ -12,9 +7,11 @@ namespace ELibrary.API.Model
         [Required]
         [StringLength(50)]
         public string UserId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string BookId { get; set; }
+
         public double RatedValue { get; set; }
         public Book Book { get; set; }
         public User User { get; set; }
