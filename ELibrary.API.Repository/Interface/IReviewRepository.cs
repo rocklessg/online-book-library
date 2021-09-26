@@ -1,4 +1,5 @@
 ﻿using ELibrary.API.Model.DTO.RequestDTO;
+using System.Threading.Tasks;
 
 namespace ELibrary.API.Repository
 {
@@ -6,5 +7,6 @@ namespace ELibrary.API.Repository
     {
         bool AddReview(AddReviewDTO addReview);
         bool UpdateReview(string reviewId, string comment);
+        Task<bool> DeleteUser(string id);
     }
 }
